@@ -40,7 +40,10 @@ void MainWindow::on_actionConnect_to_server_triggered()
         concatTextOutput("Connection failed!\n");
     }
 
-    concatTextOutput(tcp.sendOperatorValue(1, 1, 0, 2.0, 1.5));
+    concatTextOutput(tcp.sendOperatorValue(1, 1, 0, 2.0, 1.5) + "\n");
+    concatTextOutput(tcp.addCarrier(1) + "\n");
+    concatTextOutput(tcp.removeCarrier(2) + "\n");
+    concatTextOutput(tcp.removeCarrier(0) + "\n");
 
 //    for(int i = 0; i < 3; i++){
 //        QString msg = tcp.getMessageString();

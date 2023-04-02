@@ -71,18 +71,36 @@ QString LoveCommunicationTcp::sendOperatorValue(int operator_id, bool attack, in
     return QString::fromUtf8(bytes.toHex(' '));
 }
 
-void LoveCommunicationTcp::addModulator(int operator_id, int modulator_id)
+QString LoveCommunicationTcp::addModulator(int operator_id, int modulator_id)
 {
+    QByteArray bytes;
+    bytes.append((unsigned char)(0x40 + operator_id));
+    bytes.append((unsigned char)(0x10 + modulator_id));
+    sendMessageBytes(bytes);
+    return QString::fromUtf8(bytes.toHex(' '));
 }
 
-void LoveCommunicationTcp::removeModulator(int operator_id, int modulator_id)
+QString LoveCommunicationTcp::removeModulator(int operator_id, int modulator_id)
 {
+    QByteArray bytes;
+    bytes.append((unsigned char)(0x40 + operator_id));
+    bytes.append((unsigned char)(0x00 + modulator_id));
+    sendMessageBytes(bytes);
+    return QString::fromUtf8(bytes.toHex(' '));
 }
 
-void LoveCommunicationTcp::addCarrier(int operator_id)
+QString LoveCommunicationTcp::addCarrier(int operator_id)
 {
+    QByteArray bytes;
+    bytes.append((unsigned char)(0x50 + operator_id));
+    sendMessageBytes(bytes);
+    return QString::fromUtf8(bytes.toHex(' '));
 }
 
-void LoveCommunicationTcp::removeCarrier(int operator_id)
+QString LoveCommunicationTcp::removeCarrier(int operator_id)
 {
+    QByteArray bytes;
+    bytes.append((unsigned char)(0x60 + operator_id));
+    sendMessageBytes(bytes);
+    return QString::fromUtf8(bytes.toHex(' '));
 }
