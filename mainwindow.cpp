@@ -65,6 +65,7 @@ void MainWindow::on_actionConnect_to_server_triggered()
 void MainWindow::on_actionClear_output_triggered()
 {
     ui->textBox01->setPlainText("");
+    concatTextOutput("Disconnected from server.\n");
 }
 
 
@@ -134,8 +135,8 @@ void MainWindow::on_pushButton_5_clicked()
 }
 
 void MainWindow::update_slider_values(int oper){
-    float freq = pow(1.3, (float)(horizontal_position[oper] - 50) / 20.0);
-    float amp = pow(1.3, (float)(vertical_position[oper] - 50) / 20.0);
+    float freq = pow(1.90366, (float)(horizontal_position[oper] - 50) / 20.0);
+    float amp = pow(1.6, (float)(vertical_position[oper] - 50) / 20.0) - 0.3;
     // concatTextOutput(QString::number(freq) + " : " + QString::number(amp) + "\n");
     tcp.sendOperatorValue(current_operator, 1, 0, freq, amp);
     ui->horizontalSlider->setSliderPosition(horizontal_position[oper]);

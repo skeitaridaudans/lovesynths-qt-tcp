@@ -43,7 +43,7 @@ void LoveCommunicationTcp::sendMessageBytes(QByteArray msg){
     socket.write(msg);
     // Wait for the message to be sent
     if (socket.waitForBytesWritten()) {
-        qDebug() << "Message sent successfully!";
+        // qDebug() << "Message sent successfully!";
     } else {
         qDebug() << "Error sending message:" << socket.errorString();
     }
