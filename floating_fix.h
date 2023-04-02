@@ -8,47 +8,24 @@
 // Created by star on 13.2.2023.
 //
 
-#include <stdint.h>
+// function to store a floating point value in 5 bytes with each byte containing 7 bits
+void store_float_in_buffer(unsigned char *buffer, float value) {
+    uint32_t float_bits = *((uint32_t*) &value);  // get the bits of the floating point value
+    buffer[0] = (char) (float_bits & 0x7F);
+    buffer[1] = (char) ((float_bits >> 7) & 0x7F);
+    buffer[2] = (char) ((float_bits >> 14) & 0x7F);
+    buffer[3] = (char) ((float_bits >> 21) & 0x7F);
+    buffer[4] = (char) ((float_bits >> 28) & 0x7F);
+}
 
-// #include <memory.h>
-// #include <stdlib.h>
-// #include <inttypes.h>
-// #include "floating_fix.h"
-
- void fragment_floating(float f, unsigned char* fragmented)
- {
-     //Fragments the float into 5 bytes in the char array.
-     memcpy(fragmented, (const void *) &f, sizeof(f));
-     unsigned char x = ((fragmented[0] >> 7) & 1);
-     unsigned char y = ((fragmented[1] >> 7) & 1);
-     unsigned char z = ((fragmented[2] >> 7) & 1);
-     unsigned char w = ((fragmented[3] >> 7) & 1);
-     fragmented[4] |= x | (y << 1) | (z << 2) | (w << 3);
-
-     //Taking the end bit of every byte
-     for(int i=0; i<5;i++)
-     {
-         fragmented[i] &= 0x7F;
-     }
- }
-float defragment_floating(const char *fragmented)
-{
-    union
-    {
-        float f;
-        uint32_t u;
-    }tmp;
-
-    tmp.u = fragmented[0] | ((uint32_t)fragmented[1] << 8) | ((uint32_t)fragmented[2] << 15) | ((uint32_t)fragmented[3] << 24);
-    // Now retrive the endbits
-    uint32_t x = fragmented[4] & 1;
-    uint32_t y = (fragmented[4] >> 1) & 1;
-    uint32_t z = (fragmented[4] >> 2) & 1;
-    uint32_t w = (fragmented[4] >> 3) & 1;
-
-    // Now set them per byte, X to the first endbit in the first endbyte and so on.
-    tmp.u |= (w << 31) | (z << 23) | (y << 15) | (x << 7);
-    return tmp.f;
+// function to reconstruct a floating point value from a 5-byte buffer with each byte containing 7 bits
+float reconstruct_float_from_buffer(const unsigned char *buffer) {
+    uint32_t float_bits = ((uint32_t) buffer[0] & 0x7F) |
+                          (((uint32_t) buffer[1] & 0x7F) << 7) |
+                          (((uint32_t) buffer[2] & 0x7F) << 14) |
+                          (((uint32_t) buffer[3] & 0x7F) << 21) |
+                          (((uint32_t) buffer[4] & 0x7F) << 28);
+    return *((float*) &float_bits);  // convert the bits back to a floating point value
 }
 
 

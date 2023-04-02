@@ -63,10 +63,11 @@ QString LoveCommunicationTcp::sendOperatorValue(int operator_id, bool attack, in
     bytes.append((unsigned char)(0x10 + operator_id));
     bytes.append((attack ? 0x80 : 0x00) + envelope_index);
     unsigned char buf[5];
-    fragment_floating(frequency, buf);
+    store_float_in_buffer(buf, frequency);
     bytes.append(QByteArray::fromRawData((char*)buf, 5));
-    fragment_floating(amplitude, buf);
+    store_float_in_buffer(buf, amplitude);
     bytes.append(QByteArray::fromRawData((char*)buf, 5));
+    sendMessageBytes(bytes);
     return QString::fromUtf8(bytes.toHex(' '));
 }
 

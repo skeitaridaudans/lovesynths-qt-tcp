@@ -32,21 +32,28 @@ void MainWindow::on_actionConnect_to_server_triggered()
     concatTextOutput("Client starting...\n");
 
     LoveCommunicationTcp tcp;
-    // tcp.connectToServer("127.0.0.1", 4893);
-    tcp.connectToServer("10.121.101.122", 4893);
-
-    for(int i = 0; i < 3; i++){
-        QString msg = tcp.getMessageString();
-        concatTextOutput("Some data: ");
-        concatTextOutput(msg);
-        concatTextOutput("\n");
-        tcp.sendMessageString((msg));
+    // tcp.connectToServer("10.121.101.122", 4893);
+    if(tcp.connectToServer("127.0.0.1", 4893)){
+        concatTextOutput("Connected to server!\n");
     }
-    QString msg = tcp.getMessageString();
-    concatTextOutput("Some data: ");
-    concatTextOutput(msg);
-    concatTextOutput("\n");
-    concatTextOutput(tcp.sendOperatorValue(3, true, 0, 1.2, 2.3));
+    else{
+        concatTextOutput("Connection failed!\n");
+    }
+
+    concatTextOutput(tcp.sendOperatorValue(1, 1, 0, 2.0, 1.5));
+
+//    for(int i = 0; i < 3; i++){
+//        QString msg = tcp.getMessageString();
+//        concatTextOutput("Some data: ");
+//        concatTextOutput(msg);
+//        concatTextOutput("\n");
+//        tcp.sendMessageString((msg));
+//    }
+//    QString msg = tcp.getMessageString();
+//    concatTextOutput("Some data: ");
+//    concatTextOutput(msg);
+//    concatTextOutput("\n");
+//    concatTextOutput(tcp.sendOperatorValue(3, true, 0, 1.2, 2.3));
     tcp.disconnectFromServer();
 }
 
