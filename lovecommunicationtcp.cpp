@@ -104,3 +104,55 @@ QString LoveCommunicationTcp::removeCarrier(int operator_id)
     sendMessageBytes(bytes);
     return QString::fromUtf8(bytes.toHex(' '));
 }
+
+QString LoveCommunicationTcp::setAttackAmpEnvelopePoint(int point_index, float value, float time){
+    QByteArray bytes;
+    bytes.append((unsigned char)(0x30 + 0x01));
+    bytes.append(point_index);
+    unsigned char buf[5];
+    store_float_in_buffer(buf, value);
+    bytes.append(QByteArray::fromRawData((char*)buf, 5));
+    store_float_in_buffer(buf, time);
+    bytes.append(QByteArray::fromRawData((char*)buf, 5));
+    sendMessageBytes(bytes);
+    return QString::fromUtf8(bytes.toHex(' '));
+}
+
+QString LoveCommunicationTcp::setReleaseAmpEnvelopePoint(int point_index, float value, float time){
+    QByteArray bytes;
+    bytes.append((unsigned char)(0x30 + 0x02));
+    bytes.append(point_index);
+    unsigned char buf[5];
+    store_float_in_buffer(buf, value);
+    bytes.append(QByteArray::fromRawData((char*)buf, 5));
+    store_float_in_buffer(buf, time);
+    bytes.append(QByteArray::fromRawData((char*)buf, 5));
+    sendMessageBytes(bytes);
+    return QString::fromUtf8(bytes.toHex(' '));
+}
+
+QString LoveCommunicationTcp::setAttackAmpEnvelopeSize(int size){
+    QByteArray bytes;
+    bytes.append((unsigned char)(0x30 + 0x01));
+    bytes.append(size);
+    unsigned char buf[5];
+    store_float_in_buffer(buf, -1.0);
+    bytes.append(QByteArray::fromRawData((char*)buf, 5));
+    store_float_in_buffer(buf, -1.0);
+    bytes.append(QByteArray::fromRawData((char*)buf, 5));
+    sendMessageBytes(bytes);
+    return QString::fromUtf8(bytes.toHex(' '));
+}
+
+QString LoveCommunicationTcp::setReleaseAmpEnvelopeSize(int size){
+    QByteArray bytes;
+    bytes.append((unsigned char)(0x30 + 0x02));
+    bytes.append(size);
+    unsigned char buf[5];
+    store_float_in_buffer(buf, -1.0);
+    bytes.append(QByteArray::fromRawData((char*)buf, 5));
+    store_float_in_buffer(buf, -1.0);
+    bytes.append(QByteArray::fromRawData((char*)buf, 5));
+    sendMessageBytes(bytes);
+    return QString::fromUtf8(bytes.toHex(' '));
+}

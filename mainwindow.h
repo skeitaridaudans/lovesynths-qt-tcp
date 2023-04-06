@@ -43,13 +43,21 @@ private slots:
 
     void on_pushButton_5_clicked();
 
-    void on_horizontalSlider_sliderMoved(int position);
+    void on_frequencySlider_sliderMoved(int position);
 
-    void on_verticalSlider_sliderMoved(int position);
+    void on_amplitudeSlider_sliderMoved(int position);
 
     void on_pushButton_6_clicked();
 
     void on_pushButton_7_clicked();
+
+    void on_decaySlider_sliderMoved(int position);
+
+    void on_attackSlider_sliderMoved(int position);
+
+    void on_sustainSlider_sliderMoved(int position);
+
+    void on_releaseSlider_sliderMoved(int position);
 
 private:
     Ui::MainWindow *ui;

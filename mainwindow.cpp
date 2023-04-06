@@ -40,7 +40,7 @@ void MainWindow::on_actionConnect_to_server_triggered()
 {
     concatTextOutput("Client starting...\n");
 
-    if(tcp.connectToServer("10.121.101.122", 4893)){
+    if(tcp.connectToServer("10.121.101.48", 4893)){
     // if(tcp.connectToServer("127.0.0.1", 4893)){
         concatTextOutput("Connected to server!\n");
     }
@@ -59,13 +59,25 @@ void MainWindow::on_actionConnect_to_server_triggered()
     tcp.removeCarrier(4);
     tcp.removeCarrier(5);
 
+    ui->attackSlider->setSliderPosition(30);
+    ui->decaySlider->setSliderPosition(50);
+    ui->sustainSlider->setSliderPosition(70);
+    ui->releaseSlider->setSliderPosition(20);
+
+    tcp.setAttackAmpEnvelopeSize(1);
+    tcp.setAttackAmpEnvelopePoint(0, 0.0, 0.0);
+    tcp.setAttackAmpEnvelopeSize(2);
+    tcp.setAttackAmpEnvelopePoint(1, 1.0, (float)ui->attackSlider->sliderPosition() / 100.0);
+    tcp.setAttackAmpEnvelopeSize(3);
+    tcp.setAttackAmpEnvelopePoint(2, (float)ui->sustainSlider->sliderPosition() / 100.0, (float)(ui->attackSlider->sliderPosition() + ui->decaySlider->sliderPosition()) / 100.0);
+    tcp.setReleaseAmpEnvelopeSize(1);
+    tcp.setReleaseAmpEnvelopePoint(0, 0.0, (float)ui->releaseSlider->sliderPosition() / 100.0);
 }
 
 
 void MainWindow::on_actionClear_output_triggered()
 {
     ui->textBox01->setPlainText("");
-    concatTextOutput("Disconnected from server.\n");
 }
 
 
@@ -78,6 +90,7 @@ void MainWindow::on_pushButton_toggled(bool checked)
 void MainWindow::on_actionDisconnect_from_server_triggered()
 {
     tcp.disconnectFromServer();
+    concatTextOutput("Disconnected from server.\n");
 }
 
 void MainWindow::press_operator_button(int oper){
@@ -139,18 +152,18 @@ void MainWindow::update_slider_values(int oper){
     float amp = pow(1.6, (float)(vertical_position[oper] - 50) / 20.0) - 0.3;
     // concatTextOutput(QString::number(freq) + " : " + QString::number(amp) + "\n");
     tcp.sendOperatorValue(current_operator, 1, 0, freq, amp);
-    ui->horizontalSlider->setSliderPosition(horizontal_position[oper]);
-    ui->verticalSlider->setSliderPosition(vertical_position[oper]);
+    ui->frequencySlider->setSliderPosition(horizontal_position[oper]);
+    ui->amplitudeSlider->setSliderPosition(vertical_position[oper]);
 }
 
-void MainWindow::on_horizontalSlider_sliderMoved(int position)
+void MainWindow::on_frequencySlider_sliderMoved(int position)
 {
     horizontal_position[current_operator] = position;
     update_slider_values(current_operator);
 }
 
 
-void MainWindow::on_verticalSlider_sliderMoved(int position)
+void MainWindow::on_amplitudeSlider_sliderMoved(int position)
 {
     vertical_position[current_operator] = position;
     update_slider_values(current_operator);
@@ -170,5 +183,30 @@ void MainWindow::on_pushButton_7_clicked()
     concatTextOutput("Click a modulator to remove from operator: " + QString::number(current_operator) + "\n");
     removing_modulator = true;
     adding_modulator = false;
+}
+
+
+void MainWindow::on_decaySlider_sliderMoved(int position)
+{
+    tcp.setAttackAmpEnvelopePoint(2, (float)ui->sustainSlider->sliderPosition() / 100.0, (float)(ui->attackSlider->sliderPosition() + position) / 100.0);
+}
+
+
+void MainWindow::on_attackSlider_sliderMoved(int position)
+{
+    tcp.setAttackAmpEnvelopePoint(1, 1.0, (float)position / 100.0);
+    tcp.setAttackAmpEnvelopePoint(2, (float)ui->sustainSlider->sliderPosition() / 100.0, (float)(ui->attackSlider->sliderPosition() + ui->decaySlider->sliderPosition()) / 100.0);
+}
+
+
+void MainWindow::on_sustainSlider_sliderMoved(int position)
+{
+    tcp.setAttackAmpEnvelopePoint(2, (float)position / 100.0, (float)(ui->attackSlider->sliderPosition() + ui->decaySlider->sliderPosition()) / 100.0);
+}
+
+
+void MainWindow::on_releaseSlider_sliderMoved(int position)
+{
+    tcp.setReleaseAmpEnvelopePoint(0, 0.0, (float)position / 100.0);
 }
 
