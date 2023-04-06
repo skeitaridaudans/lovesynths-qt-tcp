@@ -40,8 +40,8 @@ void MainWindow::on_actionConnect_to_server_triggered()
 {
     concatTextOutput("Client starting...\n");
 
-    if(tcp.connectToServer("10.121.101.48", 4893)){
-    // if(tcp.connectToServer("127.0.0.1", 4893)){
+    // if(tcp.connectToServer("10.121.101.48", 4893)){
+    if(tcp.connectToServer("127.0.0.1", 4893)){
         concatTextOutput("Connected to server!\n");
     }
     else{
@@ -64,13 +64,13 @@ void MainWindow::on_actionConnect_to_server_triggered()
     ui->sustainSlider->setSliderPosition(70);
     ui->releaseSlider->setSliderPosition(20);
 
-    tcp.setAttackAmpEnvelopeSize(1);
+    tcp.setAttackAmpEnvelopeSize(0);
     tcp.setAttackAmpEnvelopePoint(0, 0.0, 0.0);
-    tcp.setAttackAmpEnvelopeSize(2);
+//    tcp.setAttackAmpEnvelopeSize(2);
     tcp.setAttackAmpEnvelopePoint(1, 1.0, (float)ui->attackSlider->sliderPosition() / 100.0);
-    tcp.setAttackAmpEnvelopeSize(3);
+//    tcp.setAttackAmpEnvelopeSize(3);
     tcp.setAttackAmpEnvelopePoint(2, (float)ui->sustainSlider->sliderPosition() / 100.0, (float)(ui->attackSlider->sliderPosition() + ui->decaySlider->sliderPosition()) / 100.0);
-    tcp.setReleaseAmpEnvelopeSize(1);
+    tcp.setReleaseAmpEnvelopeSize(0);
     tcp.setReleaseAmpEnvelopePoint(0, 0.0, (float)ui->releaseSlider->sliderPosition() / 100.0);
 }
 

@@ -22,8 +22,8 @@ public:
     QString removeCarrier(int operator_id);
     QString setAttackAmpEnvelopePoint(int point_index, float value, float time);
     QString setReleaseAmpEnvelopePoint(int point_index, float value, float time);
-    QString setAttackAmpEnvelopeSize(int point_index);
-    QString setReleaseAmpEnvelopeSize(int point_index);
+    QString setAttackAmpEnvelopeSize(int size);
+    QString setReleaseAmpEnvelopeSize(int size);
 
 
 private:
